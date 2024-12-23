@@ -7,6 +7,8 @@
 
 #define APPLIST_PATH "suws.list"
 
+#define WSNUM_SCAN "# %d:"
+
 
 // Imitates 'getline'.
 // Allocates the buffer if it wasn't allocated and scans until a

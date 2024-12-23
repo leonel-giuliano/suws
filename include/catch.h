@@ -3,6 +3,12 @@
 
 
 /* ERROR HANDLERS */
+// suws.c
+#define EH_EXECAPPS_FREE_LINE() do {    \
+    e = -1;                             \
+    goto free_line;                     \
+} while(0);
+
 // ws.c
 
 #define EH_GETWSNUM_CLOSE_PFP() do {    \
