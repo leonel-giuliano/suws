@@ -39,7 +39,9 @@ int fscanline(char **pbuf, size_t *pn, FILE *fp) {
 
     (*pbuf)[i] = '\0';
 
-    return (c == EOF) ? EOF : 0;
+    // Makes the EOF get scanned in the next call
+    if(c == EOF) ungetc(c, fp);
+    return (!i && c == EOF) ? EOF : 0;
 }
 
 
