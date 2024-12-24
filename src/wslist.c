@@ -8,6 +8,18 @@ static struct wslist *head = NULL;
 static struct wslist *tail = NULL;
 
 
+void wl_freelist(void) {
+    struct wslist *node;
+
+    while((node = head) != NULL) {
+        head = head->next;
+        free(node);
+    }
+
+    tail = NULL;
+}
+
+
 struct wslist *wl_newflags(int n) {
     struct wslist *new;
 

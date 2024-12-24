@@ -14,6 +14,9 @@ struct wslist {
 };
 
 
+// Frees all the elements from the list
+void wl_freelist(void);
+
 // Adds a new element to the workspace list of flags.
 // On success, returns a pointer to it.
 // On failure, returns -1 if there was a problem allocating
