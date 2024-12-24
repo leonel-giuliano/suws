@@ -14,4 +14,10 @@ struct wslist {
 };
 
 
+// Adds a new element to the workspace list of flags.
+// On success, returns a pointer to it.
+// On failure, returns -1 if there was a problem allocating
+struct wslist *wl_newflags(int _ContainerIx);
+
+
 #endif
