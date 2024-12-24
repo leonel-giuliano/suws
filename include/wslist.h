@@ -18,6 +18,9 @@ struct wslist {
 #define CONV_BTCB(_Bit) (1 << ((_Bit) % sizeof(wsflags_t) + 1))
 
 
+// Returns the state of the flag
+int wl_checkflag(int _Bit);
+
 // Sets the flag to the corresponding container flag.
 // On success, returns 0.
 // On failure, returns -1 if there was a problem allocating

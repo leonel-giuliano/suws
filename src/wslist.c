@@ -8,6 +8,20 @@ static struct wslist *head = NULL;
 static struct wslist *tail = NULL;
 
 
+int wl_checkflag(int b) {
+    int             n = b / sizeof(wsflags_t);
+    struct wslist   *node;
+
+    if(head != NULL) {
+        for(node = head; node != NULL; node = node->next)
+            if(node->ix == n) return node->flags & CONV_BTCB(b);
+    }
+
+    if((node = wl_newflags(n)) == NULL) return -1;
+    return node->flags & CONV_BTCB(b);
+}
+
+
 int wl_setflag(int b) {
     int             n = b / sizeof(wsflags_t);
     struct wslist   *node;
