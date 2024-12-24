@@ -19,8 +19,11 @@ int execapps(int wsnum) {
 
     // Search the workspace num
     lsiz = COMSIZ;
-    while((err = fscanline(&line, &lsiz, fp)) != 0) {
+    while((err = fscanline(&line, &lsiz, fp)) == 0) {
         int ntemp;
+
+        // Skip scanning for empty line
+        if(line[0] == '\0') continue;
 
         // Check if it couldn't be scanned because of an error
         // or because it's not the workspace comment
@@ -36,6 +39,19 @@ int execapps(int wsnum) {
     // found, meaning that the workspace num wasn't set
     if(err == 1)      EH_EXECAPPS_FREE_LINE();
     if(err == EOF)    goto free_line;
+
+    while((err = fscanline(&line, &lsiz, fp)) == 0) {
+        int ntemp;
+
+        if(line[0] == '\0') continue;
+        // Break when a new workspace comment was found
+        if(sscanf(line, WSNUM_SCAN, &ntemp) == 1) break;
+        if(ferror(fp)) EH_EXECAPPS_FREE_LINE();
+
+        system(line);
+    }
+
+    if(err == 1) EH_EXECAPPS_FREE_LINE();
 
     free_line:  free(line);
     close_fp:   if(fclose(fp)) e = -1;
