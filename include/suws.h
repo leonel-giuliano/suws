@@ -2,6 +2,13 @@
 #define __SUWS_H__
 
 
+/* ERROR EVENTS */
+
+typedef enum {
+    EXIT_EXECAPPS = 1
+} exit_t;
+
+
 // Executes the commands in the file in respect
 // to the workspace num.
 // On success, returns 0.

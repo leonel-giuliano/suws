@@ -3,9 +3,19 @@
 #include <linux/limits.h>
 #include <string.h>
 
+#include "suws.h"
 #include "ws.h"
 #include "file.h"
 #include "catch.h"
+
+
+int main(void) {
+    exit_t e = 0;
+
+    if(execapps(1)) EH_EXECAPPS(return e);
+
+    return e;
+}
 
 
 int execapps(int wsnum) {
