@@ -5,6 +5,7 @@
 
 #include "suws.h"
 #include "ws.h"
+#include "wslist.h"
 #include "file.h"
 #include "catch.h"
 
@@ -12,8 +13,10 @@
 int main(void) {
     exit_t e = 0;
 
-    if(execapps(1)) EH_EXECAPPS(return e);
+    if(execapps(1)) EH_EXECAPPS(goto free_wlist);
+    if(execapps(1)) EH_EXECAPPS(goto free_wlist);
 
+    free_wlist: wl_freelist();
     return e;
 }
 
@@ -23,6 +26,8 @@ int execapps(int wsnum) {
     char    path[PATH_MAX], *line = NULL;
     size_t  lsiz;
     FILE    *fp;
+
+    if(wl_checkflag(wsnum)) return 0;
 
     if((fp = fopen(getapp_path(path, sizeof(path)), "r")) == NULL)
         return -1;
@@ -61,7 +66,8 @@ int execapps(int wsnum) {
         system(line);
     }
 
-    if(err == 1) EH_EXECAPPS_FREE_LINE();
+    if(err == 1)            EH_EXECAPPS_FREE_LINE();
+    if(wl_setflag(wsnum))   EH_EXECAPPS_FREE_LINE();
 
     free_line:  free(line);
     close_fp:   if(fclose(fp)) e = -1;
