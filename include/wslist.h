@@ -14,6 +14,15 @@ struct wslist {
 };
 
 
+// Converts the bit flag to the container bit position
+#define CONV_BTCB(_Bit) (1 << ((_Bit) % sizeof(wsflags_t) + 1))
+
+
+// Sets the flag to the corresponding container flag.
+// On success, returns 0.
+// On failure, returns -1 if there was a problem allocating
+int wl_setflag(int _Bit);
+
 // Frees all the elements from the list
 void wl_freelist(void);
 
