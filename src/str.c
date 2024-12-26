@@ -13,6 +13,9 @@ char *sscanline(char **pbuf, size_t *pn, const char *cont) {
     if(cont == NULL) return NULL;
     len = ((end = strchr((cont), '\n')) == NULL) ? end - cont : strlen(cont);
 
+    // Makes it so that the end of the string is scanned at last
+    // without any more character
+    if(end == NULL && len) end = (char *)&cont[len];
     if(len && (*pbuf == NULL || *pn < (len + 1) * sizeof(char))) {
         if((ptemp = (char *)realloc(*pbuf, (len + 1) * sizeof(char))) == NULL) return NULL;
         *pn = (len + 1) * sizeof(char);
