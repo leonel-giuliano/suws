@@ -7,28 +7,20 @@
 
 char *sscanline(char **pbuf, size_t *pn, const char *cont) {
     char    *end, *ptemp;
-    size_t  i = 0;
-    size_t  len;
+    size_t  len, siz;
 
     if(cont == NULL) return NULL;
-    len = ((end = strchr((cont), '\n')) == NULL) ? end - cont : strlen(cont);
+    len = ((end = strchr((cont), '\n')) != NULL) ? end - cont : strlen(cont);
+    siz = (len + 1) * sizeof(char);
 
-    // Makes it so that the end of the string is scanned at last
-    // without any more character
-    if(end == NULL && len) end = (char *)&cont[len];
-    if(len && (*pbuf == NULL || *pn < (len + 1) * sizeof(char))) {
-        if((ptemp = (char *)realloc(*pbuf, (len + 1) * sizeof(char))) == NULL) return NULL;
-        *pn = (len + 1) * sizeof(char);
-        *pbuf = ptemp;
+    if(len && (*pbuf == NULL || *pn < siz)) {
+        if((ptemp = (char *)realloc(*pbuf, siz)) == NULL) return NULL;
+        *pn     = siz;
+        *pbuf   = ptemp;
     }
 
-    while(i < len) {
-        (*pbuf)[i] = cont[i];
-        i++;
-    }
-
-    (*pbuf)[i] = '\0';
-    return (end != NULL) ? end + 1 : (char *)-1;
+    strncpy(*pbuf, cont, len);
+    return (end == NULL && !len) ? (char *)-1 : end + 1;
 }
 
 
