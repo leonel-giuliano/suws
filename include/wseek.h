@@ -14,6 +14,9 @@ struct wseek {
 };
 
 
+// Frees the entire list
+void wk_freelist(void);
+
 // Adds a new element to the list.
 // On success, returns a pointer to the element.
 // On failure, returns NULL if there was a problem allocating

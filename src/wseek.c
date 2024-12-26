@@ -8,6 +8,18 @@ static struct wseek *head = NULL;
 static struct wseek *tail = NULL;
 
 
+void wk_freelist(void) {
+    struct wseek *node;
+
+    while((node = head) != NULL) {
+        head = head->next;
+        free(node);
+    }
+
+    tail = NULL;
+}
+
+
 struct wseek *wk_add(int n, size_t sk) {
     struct wseek *new;
 
