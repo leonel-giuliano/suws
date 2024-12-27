@@ -15,8 +15,11 @@ char *fgetcont(int fd, char **pbuf, size_t *pn) {
         *pn = (n + 1) * sizeof(char);
     }
 
-    memset(&lk, 0, sizeof(lk));
-    lk.l_type = F_RDLCK;
+
+    lk.l_type   = F_RDLCK;
+    lk.l_whence = SEEK_SET;
+    lk.l_start  = 0;
+    lk.l_len    = 0;
     if(fcntl(fd, F_SETLK, &lk)) return NULL;
 
     if(read(fd, *pbuf, n) != n) return NULL;
