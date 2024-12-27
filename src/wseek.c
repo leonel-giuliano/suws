@@ -40,7 +40,7 @@ struct wseek *wk_mod(int n, size_t sk, struct wseek *seek) {
 struct wseek *wk_add(int n, size_t sk) {
     struct wseek *new;
 
-    if((new = (struct wseek *)calloc(1, sizeof(struct wseek))) == NULL)
+    if((new = (struct wseek *)malloc(sizeof(struct wseek))) == NULL)
         return NULL;
 
     if(tail == NULL)    head        = new;
