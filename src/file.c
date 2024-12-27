@@ -1,10 +1,13 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
 
 
 char *fgetcont(int fd, char **pbuf, size_t *pn) {
-    size_t n;
+    size_t          n;
+    struct flock    lk;
 
     if((n = lseek(fd, 0, SEEK_END)) == 0) return (char *)-1;
     if(*pbuf == NULL || *pn <= n) {
@@ -12,8 +15,15 @@ char *fgetcont(int fd, char **pbuf, size_t *pn) {
         *pn = (n + 1) * sizeof(char);
     }
 
+    memset(&lk, 0, sizeof(lk));
+    lk.l_type = F_RDLCK;
+    if(fcntl(fd, F_SETLK, &lk)) return NULL;
+
     if(read(fd, *pbuf, n) != n) return NULL;
     (*pbuf)[n] = '\0';
+
+    lk.l_type = F_UNLCK;
+    if(fcntl(fd, F_SETLK, &lk)) return NULL;
 
     return *pbuf;
 }
