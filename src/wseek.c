@@ -8,15 +8,21 @@ static struct wseek *head = NULL;
 static struct wseek *tail = NULL;
 
 
-void wk_freelist(void) {
+struct wseek *wk_mod(int n, size_t sk, struct wseek *seek) {
     struct wseek *node;
 
-    while((node = head) != NULL) {
-        head = head->next;
-        free(node);
-    }
+    // The node is the element next to the current one
+    node = (seek == NULL) ? head : seek->next;
+    if(node == NULL && (node = wk_add(n, sk)) == NULL) return NULL;
 
-    tail = NULL;
+    node->n     = n;
+    node->sk    = sk;
+
+    // Instead of freeing the data that is not used, it
+    // puts a '-1' to check in case it doesn't use the other elements
+    if(node->next != NULL) node->next->n = -1;
+
+    return node;
 }
 
 
@@ -35,4 +41,16 @@ struct wseek *wk_add(int n, size_t sk) {
     tail        = new;
 
     return new;
+}
+
+
+void wk_freelist(void) {
+    struct wseek *node;
+
+    while((node = head) != NULL) {
+        head = head->next;
+        free(node);
+    }
+
+    tail = NULL;
 }
