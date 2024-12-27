@@ -2,7 +2,7 @@
 #define __SUWS_WSEEK_H__
 
 
-#include <stddef.h>
+#include <sys/types.h>
 
 
 // Struct for the line position of the worskpace
@@ -13,6 +13,13 @@ struct wseek {
     struct wseek    *next;
 };
 
+
+// Gets the position where the worskpace num is inside the file.
+// Saves inside the next seek the following wokspace num position.
+// If it's set to NULL, then it doesn't get saved.
+// If there is no other workspace num, it gets set to '-1'.
+// Returns the position or -1 if it wasn't found on the list
+ssize_t wk_getseek(int _WorkspaceNum, ssize_t *_PtrNextSeek);
 
 // Modifies the next element of the list.
 // If the element is NULL, it starts with the head of the list.

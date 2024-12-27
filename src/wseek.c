@@ -1,11 +1,22 @@
-#include <stddef.h>
 #include <stdlib.h>
+#include <sys/types.h>
 
 #include "wseek.h"
 
 
 static struct wseek *head = NULL;
 static struct wseek *tail = NULL;
+
+
+ssize_t wk_getseek(int n, ssize_t *psk) {
+    struct wseek *node;
+
+    for(node = head; node != NULL && node->n != n; node = node->next);
+    if(psk != NULL)
+        *psk = (node != NULL && node->next != NULL) ? node->next->sk : -1;
+
+    return (node == NULL) ? -1 : node->sk;
+}
 
 
 struct wseek *wk_mod(int n, size_t sk, struct wseek *seek) {
