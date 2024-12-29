@@ -19,6 +19,7 @@ char *sscanline(char **pbuf, size_t *pn, const char *cont) {
         *pbuf   = ptemp;
     }
 
+    memset(*pbuf, 0, *pn);
     strncpy(*pbuf, cont, len);
     return (end == NULL && !len) ? (char *)-1 : end + 1;
 }
