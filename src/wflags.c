@@ -15,7 +15,7 @@ int wf_checkflag(int n) {
     if((i = n / sizeof(wflags_t)) < 0) return -1;
     for(node = head; node != NULL && node->i != i; node = node->next);
 
-    return (node != NULL) ? node->flags & WF_NTOCI(n) : 0;
+    return (node != NULL) ? (node->flags & WF_NTOCI(n)) != 0 : 0;
 }
 
 
@@ -55,7 +55,7 @@ struct wflags *wf_add(int i) {
 void wf_freelist(void) {
     struct wflags *node;
 
-    while((node = head) == NULL) {
+    while((node = head) != NULL) {
         head = head->next;
         free(node);
     }
