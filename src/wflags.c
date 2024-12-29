@@ -8,6 +8,17 @@ static struct wflags *head = NULL;
 static struct wflags *tail = NULL;
 
 
+int wf_checkflag(int n) {
+    int             i;
+    struct wflags   *node;
+
+    if((i = n / sizeof(wflags_t)) < 0) return -1;
+    for(node = head; node != NULL && node->i != i; node = node->next);
+
+    return (node != NULL) ? node->flags & WF_NTOCI(n) : 0;
+}
+
+
 int wf_setflag(int n) {
     int             i;
     struct wflags   *node;
