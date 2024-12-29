@@ -24,3 +24,15 @@ struct wflags *wf_add(int i) {
 
     return new;
 }
+
+
+void wf_freelist(void) {
+    struct wflags *node;
+
+    while((node = head) == NULL) {
+        head = head->next;
+        free(node);
+    }
+
+    tail = NULL;
+}

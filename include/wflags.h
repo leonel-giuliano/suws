@@ -20,5 +20,8 @@ struct wflags {
 // On failure, returns NULL if there was a problem allocating
 struct wflags *wf_add(int _ContainerIx);
 
+// Frees all the elements in the list
+void wf_freelist(void);
+
 
 #endif
