@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
@@ -8,7 +9,7 @@ static struct wseek *head = NULL;
 static struct wseek *tail = NULL;
 
 
-ssize_t wk_getseek(int n, ssize_t *psk) {
+size_t wk_getseek(int n, size_t *psk) {
     struct wseek *node;
 
     for(node = head; node != NULL && node->n != n; node = node->next);
