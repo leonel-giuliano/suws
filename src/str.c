@@ -19,23 +19,28 @@ char *sscanline(char **pbuf, size_t *pn, const char *cont) {
         *pbuf   = ptemp;
     }
 
+    memset(*pbuf, 0, *pn);
     strncpy(*pbuf, cont, len);
     return (end == NULL && !len) ? (char *)-1 : end + 1;
 }
 
 
 void getcfvars(struct cfvars *cbuf, const char *cont) {
-    char    *seek;
+    char    *seek, *pathtemp;
     char    *path   = APPLIST_PATH;
     size_t  usleep  = PRED_USLEEP;
     size_t  pathlen = sizeof(APPLIST_PATH) - 1;
 
     if(cont != NULL) {
         if((seek = strstr(cont, PATH_VAR)) != NULL) {
-            path = seek + sizeof(PATH_VAR) - 1;
-            pathlen = 0;
-            while(path[pathlen] != '\n' && path[pathlen] != '\0')
-                if(++pathlen == sizeof(APPLIST_PATH) - 1) break;
+            pathtemp = seek + sizeof(PATH_VAR) - 1;
+
+            if(pathtemp[0] != '\n' && pathtemp[0] != '\0') {
+                path    = pathtemp;
+                pathlen = 0;
+                while(path[pathlen] != '\n' && path[pathlen] != '\0')
+                    if(++pathlen == sizeof(APPLIST_PATH) - 1) break;
+            }
         }
 
         if((seek = strstr(cont, USLEEP_VAR)) != NULL)
